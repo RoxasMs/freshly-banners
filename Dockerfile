@@ -14,6 +14,7 @@ WORKDIR /var/www/html
 
 COPY . .
 
+RUN git config --global --add safe.directory /var/www/html
 RUN composer install --no-interaction --optimize-autoloader
 
 CMD ["php", "-S", "0.0.0.0:8000", "-t", "public"]
