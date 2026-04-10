@@ -1,0 +1,19 @@
+services:
+  php:
+    build: .
+    ports:
+      - "8000:8000"
+    volumes:
+      - .:/var/www/html
+    depends_on:
+      - db
+
+  db:
+    image: mysql:8.0
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: freshly_banners
+      MYSQL_USER: freshly
+      MYSQL_PASSWORD: freshly
+    ports:
+      - "3306:3306"
