@@ -16,6 +16,28 @@ class BannerRepository extends ServiceEntityRepository
         parent::__construct($registry, Banner::class);
     }
 
+    /**
+     * @return Banner[]
+     */
+    public function findVisibleForLocale(string $locale, \DateTimeInterface $today): array
+    {
+        return $this->createQueryBuilder('b')
+            ->innerJoin('b.bannerContents', 'bc', 'WITH', 'bc.active_lang = :activeLang')
+            ->innerJoin('bc.language', 'l', 'WITH', 'l.locale = :locale')
+            ->leftJoin('b.background_color', 'c')
+            ->addSelect('bc', 'l', 'c')
+            ->andWhere('b.active = :active')
+            ->andWhere('b.start_date <= :today')
+            ->andWhere('b.end_date >= :today')
+            ->setParameter('active', true)
+            ->setParameter('activeLang', true)
+            ->setParameter('locale', $locale)
+            ->setParameter('today', $today->format('Y-m-d'))
+            ->orderBy('b.start_date', 'DESC')
+            ->getQuery()
+            ->getResult();
+    }
+
     //    /**
     //     * @return Banner[] Returns an array of Banner objects
     //     */

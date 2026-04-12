@@ -1,0 +1,35 @@
+{{ form_start(form) }}
+    <div class="row g-3 mb-4">
+        <div class="col-md-6">{{ form_row(form.active) }}</div>
+        <div class="col-md-6">{{ form_row(form.internal_name) }}</div>
+        <div class="col-md-6">{{ form_row(form.start_date) }}</div>
+        <div class="col-md-6">{{ form_row(form.end_date) }}</div>
+        <div class="col-md-6">{{ form_row(form.background_color) }}</div>
+    </div>
+
+    <div class="d-flex justify-content-between align-items-center mb-2">
+        <h4 class="h5 mb-0">Translations</h4>
+        <span class="text-muted small">Add one block per language</span>
+    </div>
+    <div id="banner-contents" 
+         data-index="{{ form.bannerContents|length }}"
+         data-prototype="{{ form_widget(form.bannerContents.vars.prototype)|e('html_attr') }}">
+        {% for content in form.bannerContents %}
+            <div class="banner-content-item border rounded-4 bg-light-subtle p-3 mb-3 shadow-sm">
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                    <span class="translation-title fw-semibold">Translation #{{ loop.index }}</span>
+                    <button type="button" class="btn btn-outline-danger btn-sm remove-content">Remove</button>
+                </div>
+
+                {{ form_row(content.language) }}
+                {{ form_row(content.content) }}
+                {{ form_row(content.active_lang) }}
+            </div>
+        {% endfor %}
+    </div>
+
+    <div class="d-flex gap-2 mb-3">
+        <button type="button" class="btn btn-outline-primary" id="add-content">+ Add translation</button>
+        <button class="btn btn-primary">{{ button_label|default('Save') }}</button>
+    </div>
+{{ form_end(form) }}

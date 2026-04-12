@@ -3,10 +3,19 @@ services:
     build: .
     ports:
       - "8000:8000"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
     volumes:
       - .:/var/www/html
     depends_on:
-      - freshly-banners-db
+      freshly-banners-db:
+        condition: service_healthy
+    command: >
+      sh -lc "
+      php bin/console doctrine:migrations:migrate --no-interaction &&
+      php bin/console doctrine:fixtures:load --no-interaction --append &&
+      php -S 0.0.0.0:8000 -t public
+      "
 
   freshly-banners-db:
     image: mysql:8.0
@@ -17,3 +26,8 @@ services:
       MYSQL_PASSWORD: freshly
     ports:
       - "3306:3306"
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-proot"]
+      interval: 5s
+      timeout: 3s
+      retries: 20

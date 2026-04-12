@@ -1,0 +1,33 @@
+.home-hero {
+    background: linear-gradient(120deg, #fff7ec 0%, #e7f7ef 55%, #e8f1ff 100%);
+    border: 1px solid #e9ecef;
+    border-radius: 1rem;
+    padding: 2rem;
+    margin-bottom: 1.5rem;
+}
+
+.banner-card {
+    border-radius: 1rem;
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    padding: 1.25rem;
+    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.08);
+    margin-bottom: 1rem;
+}
+
+.banner-label {
+    display: inline-block;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    opacity: 0.92;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+}
+
+.banner-content {
+    font-size: 1.1rem;
+    line-height: 1.5;
+    margin: 0;
+    white-space: pre-line;
+    text-shadow: 0 1px 1px rgba(0, 0, 0, 0.15);
+}

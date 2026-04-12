@@ -1,0 +1,52 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Banner index{% endblock %}
+
+{% block body %}
+    <h1>Banner index</h1>
+
+    <table class="table table-striped table-hover align-middle">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Active</th>
+                <th>Internal_name</th>
+                <th>Start_date</th>
+                <th>End_date</th>
+                <th>Background_color</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for banner in banners %}
+            <tr>
+                <td>{{ banner.id }}</td>
+                <td>{{ banner.active ? 'Yes' : 'No' }}</td>
+                <td>{{ banner.internalName }}</td>
+                <td>{{ banner.startDate ? banner.startDate|date('Y-m-d') : '' }}</td>
+                <td>{{ banner.endDate ? banner.endDate|date('Y-m-d') : '' }}</td>
+                <td>
+                    {% if banner.backgroundColor %}
+                        {{ banner.backgroundColor.name }} ({{ banner.backgroundColor.code }})
+                    {% endif %}
+                </td>
+                <td>
+                    <div class="d-flex gap-2" role="group" aria-label="Banner actions">
+                        <a class="btn btn-sm btn-outline-primary" href="{{ path('app_banner_show', {'id': banner.id}) }}">View</a>
+                        <a class="btn btn-sm btn-outline-warning" href="{{ path('app_banner_edit', {'id': banner.id}) }}">Edit</a>
+                    </div>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="7">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <div class="d-flex gap-2">
+        <a class="btn btn-primary" href="{{ path('app_banner_new') }}">Create Banner</a>
+        <a class="btn btn-outline-secondary" href="{{ path('app_home') }}">Back to Home</a>
+    </div>
+{% endblock %}

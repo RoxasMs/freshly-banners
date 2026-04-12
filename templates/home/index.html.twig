@@ -1,0 +1,54 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Freshly Home{% endblock %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="/css/home.css">
+{% endblock %}
+
+{% block body %}
+    <section class="home-hero">
+        <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
+            <div>
+                <h1 class="mb-1">Freshly Banners</h1>
+                <p class="mb-0 text-muted">Contenido activo para el idioma: {{ locale|upper }}</p>
+            </div>
+            <div class="d-flex align-items-center gap-2">
+                <form method="get" action="{{ path('app_home') }}" class="d-flex align-items-center gap-2">
+                    <select name="locale" class="form-select form-select-sm" onchange="this.form.submit()">
+                        {% for language in languages %}
+                            <option value="{{ language.locale }}" {{ language.locale == locale ? 'selected' : '' }}>
+                                {{ language.name }} ({{ language.locale|upper }})
+                            </option>
+                        {% endfor %}
+                    </select>
+                </form>
+                <a class="btn btn-outline-dark" href="{{ path('app_banner_index') }}">Gestionar banners</a>
+            </div>
+        </div>
+    </section>
+
+    {% if banners is empty %}
+        <div class="alert alert-light border">
+            No hay banners activos para este idioma en este momento.
+        </div>
+    {% else %}
+        {% for banner in banners %}
+            {% set translation = null %}
+            {% for content in banner.bannerContents %}
+                {% if content.language and content.language.locale == locale %}
+                    {% set translation = content.content %}
+                {% endif %}
+            {% endfor %}
+
+            {% if translation %}
+                {% set style = bannerStyles[banner.id]|default({'background': '#f8f9fa', 'text': '#ffffff'}) %}
+                <article class="banner-card"
+                         style="background-color: {{ style.background }}; color: {{ style.text }};">
+                    <span class="banner-label">{{ banner.internalName }}</span>
+                    <p class="banner-content">{{ translation }}</p>
+                </article>
+            {% endif %}
+        {% endfor %}
+    {% endif %}
+{% endblock %}

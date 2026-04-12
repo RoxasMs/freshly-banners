@@ -28,14 +28,15 @@ class Banner
     #[ORM\Column(type: Types::DATE_MUTABLE)]
     private ?\DateTime $end_date = null;
 
-    #[ORM\Column(length: 20)]
-    private ?string $background_color = null;
-
     /**
      * @var Collection<int, BannerContent>
      */
     #[ORM\OneToMany(targetEntity: BannerContent::class, mappedBy: 'banner', orphanRemoval: true)]
     private Collection $bannerContents;
+
+    #[ORM\ManyToOne]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Color $background_color = null;
 
     public function __construct()
     {
@@ -95,18 +96,6 @@ class Banner
         return $this;
     }
 
-    public function getBackgroundColor(): ?string
-    {
-        return $this->background_color;
-    }
-
-    public function setBackgroundColor(string $background_color): static
-    {
-        $this->background_color = $background_color;
-
-        return $this;
-    }
-
     /**
      * @return Collection<int, BannerContent>
      */
@@ -133,6 +122,18 @@ class Banner
                 $bannerContent->setBanner(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getBackgroundColor(): ?Color
+    {
+        return $this->background_color;
+    }
+
+    public function setBackgroundColor(?Color $background_color): static
+    {
+        $this->background_color = $background_color;
 
         return $this;
     }
