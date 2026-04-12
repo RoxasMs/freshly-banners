@@ -7,6 +7,7 @@ services:
       - "host.docker.internal:host-gateway"
     volumes:
       - .:/var/www/html
+      - vendor:/var/www/html/vendor
     depends_on:
       freshly-banners-db:
         condition: service_healthy
@@ -27,7 +28,10 @@ services:
     ports:
       - "3306:3306"
     healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-proot"]
+      test: ["CMD", "mysqladmin", "ping", "--protocol=tcp", "-h", "127.0.0.1", "-proot"]
       interval: 5s
       timeout: 3s
       retries: 20
+
+volumes:
+  vendor:

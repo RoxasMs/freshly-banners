@@ -63,15 +63,21 @@ Esto reduce acoplamiento, centraliza la lógica de negocio y deja la solución m
 - `src/DataFixtures/AppFixtures.php`: datos iniciales
 
 ## Ejecución local (Docker)
-1. Construir y levantar:
+1. Crear el archivo de entorno a partir del ejemplo:
 ```bash
-docker compose down -v
+cp .env.sample .env
+```
+
+2. Construir y levantar:
+```bash
 docker compose up --build -d
 ```
 
-2. Acceder:
+3. Acceder:
 - Home: `http://localhost:8000/`
 - CRUD banners: `http://localhost:8000/banner`
+
+> Si ya tenías el entorno levantado y quieres empezar desde cero, puedes ejecutar antes `docker compose down -v` para borrar contenedores y volúmenes.
 
 ## Notas
 - Los fixtures se cargan al iniciar el contenedor con `--append`.
